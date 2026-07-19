@@ -1,0 +1,16 @@
+{
+  "title": "{{DISPLAY_NAME}}",
+  "type": "model",
+  "tags": ["fun", "roleplay"],
+  "ignore": [
+    "*.blend",
+    "*.fbx",
+    "*.qc",
+    "*.smd",
+    "*.dmx",
+    "*.vta",
+    "*.log",
+    "backups/*",
+    "reports/*"
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "GMod 完整转模"
+  short_description: "完整制作、审查、修复并部署 Garry's Mod 角色模型"
+  default_prompt: "Use $gmod-model-porter to port, audit, compile, and deploy this character as a complete Garry's Mod addon."

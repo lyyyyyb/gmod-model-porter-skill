@@ -1,0 +1,7 @@
+[特色 / Features]
+玩家模型、敌友 NPC、物理布娃娃、三套 C-Arms、完整身体组、定时眨眼、死亡闭眼、动骨与自定义 Hitbox。
+Player model, friendly/hostile NPCs, physics ragdoll, three C-Arms sets, bodygroups, blinking, closed eyes on death, jigglebones, and custom hitboxes.
+
+[免责声明 / Disclaimer]
+模型版权归原作者 {{AUTHOR}} 所有。本项目仅为 GMod 移植；如作者要求，将配合删除。
+The model belongs to {{AUTHOR}}. This is an unofficial GMod port and will be removed at the author's request.
