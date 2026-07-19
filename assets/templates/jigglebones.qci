@@ -1,0 +1,17 @@
+// Replace all tokens from measured Unity PhysBone or Dynamic Bone evidence.
+// Keep breast bones rigid unless the project explicitly requires them.
+$jigglebone "{{BONE_NAME}}"
+{
+    is_flexible
+    {
+        length {{LENGTH}}
+        tip_mass {{TIP_MASS}}
+        pitch_stiffness {{PITCH_STIFFNESS}}
+        pitch_damping {{PITCH_DAMPING}}
+        yaw_stiffness {{YAW_STIFFNESS}}
+        yaw_damping {{YAW_DAMPING}}
+        along_stiffness {{ALONG_STIFFNESS}}
+        along_damping {{ALONG_DAMPING}}
+        angle_constraint {{ANGLE_CONSTRAINT}}
+    }
+}

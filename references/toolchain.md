@@ -1,5 +1,7 @@
 # 工具链与执行方式
 
+安装、版本建议和官方下载位置见 [dependencies.md](dependencies.md)。仓库只保存脚本和纯文本模板，不保存第三方可执行文件、Valve 资源或角色资产。
+
 ## 工具选择
 
 优先使用仓库已提供的 Blender 版本、插件、模板和 Source 编译工具。不要先升级 Blender 或插件；旧项目常依赖特定版本的 Blender Source Tools。
@@ -18,16 +20,26 @@
 
 ## 路径发现
 
-先搜索，不写死旧路径：
+先运行统一检测器，不写死旧项目路径：
 
 ```powershell
-Get-ChildItem -Path C:\,D:\,F:\ -Filter blender.exe -Recurse -ErrorAction SilentlyContinue
-Get-ChildItem -Path C:\,D:\,F:\ -Filter studiomdl.exe -Recurse -ErrorAction SilentlyContinue
-Get-ChildItem -Path C:\,D:\,F:\ -Filter VTFCmd.exe -Recurse -ErrorAction SilentlyContinue
-Get-ChildItem -Path C:\,D:\,F:\ -Filter gmad.exe -Recurse -ErrorAction SilentlyContinue
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\check_dependencies.ps1 `
+  -JsonPath <work>\reports\dependencies.json
 ```
 
-限制搜索到用户资料、工具仓库和 GMod 安装目录，避免对整盘重复扫描。
+检测器搜索 PATH、Steam 库、Blender 用户插件目录和少量常见工具目录，不会递归扫描整盘，也不会下载程序或修改 PATH。
+
+## 项目初始化
+
+```powershell
+python scripts\create_port_workspace.py `
+  --work-root <work> `
+  --model-id <model_id> `
+  --display-name "<Display Name>" `
+  --target-height 72
+```
+
+脚本只创建目录、项目配置和恢复状态，不复制原模型。源文件许可确认后，另行复制到 `source_original/`，后续修改只写入 `source_work/`。
 
 ## Blender 后台执行
 
@@ -46,6 +58,22 @@ Get-ChildItem -Path C:\,D:\,F:\ -Filter gmad.exe -Recurse -ErrorAction SilentlyC
 - 报告对象数、骨数、三角面、Shape Key、权重异常和文件哈希。
 
 需要 GUI/MCP 时，每次操作后保存编号 Blend；连续三次无法稳定完成时切回后台 Python。
+
+没有许可明确的 `Workspace.blend` 时，生成一个不带骨架、模型或贴图的干净工作模板：
+
+```powershell
+& <blender.exe> --background --factory-startup `
+  --python assets\templates\blender\setup_port_scene.py `
+  -- --output <work>\source_work\00_workspace.blend --target-height 72
+```
+
+第一次处理未知 Blend 时先运行只读清单模板：
+
+```powershell
+& <blender.exe> --background <input.blend> `
+  --python assets\templates\blender\inspect_character.py `
+  -- --output <work>\reports\blender_inventory.json
+```
 
 ## StudioMDL 编译
 
@@ -104,6 +132,8 @@ python scripts/audit_addon.py --addon <staging_addon> --compare <game_addon>
 ```
 
 比较时排除 GMad 正常忽略的 `addon.json`，其余资源必须逐文件哈希一致。GMA 内不得包含开发源文件和备份。
+
+`assets/templates/build_release.ps1` 已实现开发文件拦截、已有发布备份、GMad 创建、反向解包、SHA256 核对和收据生成。将它复制到工作区使用，不要把输出 GMA 提交回 Skill 仓库。
 
 ## 安全部署
 

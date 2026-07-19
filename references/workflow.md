@@ -18,6 +18,13 @@
 
 ## 1. 任务定义与许可
 
+先运行依赖检测并创建标准工作区：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\check_dependencies.ps1 -JsonPath <work>\reports\dependencies.json
+python scripts\create_port_workspace.py --work-root <work> --model-id <model_id> --target-height 72
+```
+
 先生成一份任务清单，至少记录：
 
 - 原作者、作品链接、许可、是否允许再发布、删除配合声明。

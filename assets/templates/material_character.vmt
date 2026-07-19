@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+    "$basetexture" "models/{{MODEL_ID}}/{{BASE_TEXTURE}}"
+    "$bumpmap" "models/{{MODEL_ID}}/{{NORMAL_TEXTURE}}"
+    "$phong" "1"
+    "$phongboost" "{{PHONG_BOOST}}"
+    "$phongexponent" "{{PHONG_EXPONENT}}"
+    "$phongfresnelranges" "[0.05 0.5 1]"
+    "$halflambert" "1"
+    "$nocull" "{{NO_CULL_0_OR_1}}"
+
+    // Add $translucent or $alphatest only when the source material needs it.
+}

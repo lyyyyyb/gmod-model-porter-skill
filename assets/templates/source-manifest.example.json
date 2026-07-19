@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "model_id": "example_character",
+  "author": "",
+  "source_url": "",
+  "license_or_terms": "",
+  "redistribution_allowed": false,
+  "permission_evidence": "",
+  "removal_request_policy": "Comply with the original author's removal request",
+  "reference_assets_are_method_only": true,
+  "inputs": [
+    {
+      "path": "",
+      "purpose": "source model, texture, Unity evidence, or authorized reference",
+      "sha256": "",
+      "redistributable": false
+    }
+  ]
+}

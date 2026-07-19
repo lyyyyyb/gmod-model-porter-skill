@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "model": {
+    "id": "example_character",
+    "display_name": "Example Character",
+    "author": "",
+    "source_url": "",
+    "license_notes": "Permission must be verified before redistribution"
+  },
+  "source": {
+    "blend_or_fbx": "source_original",
+    "unity_project_or_package": "source_original",
+    "reference_addons": []
+  },
+  "paths": {
+    "source_work": "source_work",
+    "unity_extract": "unity_extract",
+    "compile": "compile",
+    "compiler_game": "compiler_game",
+    "addon_stage": "addon_stage",
+    "release": "release",
+    "reports": "reports",
+    "previews": "previews",
+    "backups": "backups",
+    "game_addon": ""
+  },
+  "target": {
+    "human_height_source_units": 72.0,
+    "player_model": true,
+    "friendly_npc": true,
+    "hostile_npc": true,
+    "physics_ragdoll": true,
+    "carms": [
+      "automatic",
+      "bare",
+      "uniform_sleeves"
+    ],
+    "bodygroups": [],
+    "automatic_blink": true,
+    "closed_eyes_on_death": true,
+    "jigglebone_regions": [
+      "hair",
+      "skirt",
+      "ears",
+      "tail"
+    ],
+    "breast_jigglebones": false
+  },
+  "materials": {
+    "source_path": "",
+    "gmod_cdmaterials": "models/example_character",
+    "build_compressed": true,
+    "build_uncompressed": true
+  },
+  "release": {
+    "addon_title": "Example Character",
+    "workshop_description": "release/workshop_description_zh_en.txt"
+  }
+}

@@ -1,0 +1,7 @@
+// Measure bounds in each ValveBiped bone's local space.
+// Cover the human body only; exclude hair, ears, clothing, pets and tails.
+$hboxset "default"
+$hbox 1 "ValveBiped.Bip01_Head1" {{HEAD_MIN_X}} {{HEAD_MIN_Y}} {{HEAD_MIN_Z}} {{HEAD_MAX_X}} {{HEAD_MAX_Y}} {{HEAD_MAX_Z}}
+$hbox 2 "ValveBiped.Bip01_Spine4" {{CHEST_MIN_X}} {{CHEST_MIN_Y}} {{CHEST_MIN_Z}} {{CHEST_MAX_X}} {{CHEST_MAX_Y}} {{CHEST_MAX_Z}}
+$hbox 3 "ValveBiped.Bip01_Pelvis" {{PELVIS_MIN_X}} {{PELVIS_MIN_Y}} {{PELVIS_MIN_Z}} {{PELVIS_MAX_X}} {{PELVIS_MAX_Y}} {{PELVIS_MAX_Z}}
+{{MEASURED_ARM_HAND_LEG_FOOT_HITBOXES}}

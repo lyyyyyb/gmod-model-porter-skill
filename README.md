@@ -27,13 +27,16 @@
 gmod-model-porter-skill/
 ├── SKILL.md                 Codex 核心执行规则
 ├── agents/openai.yaml       Skill 显示信息和默认提示词
-├── assets/templates/        PM、NPC、C-Arms、Lua、Ragdoll 和 Workshop 模板
+├── assets/templates/        项目配置、Blender、QC、VMT、Lua、Ragdoll 和发布模板
 ├── references/
 │   ├── workflow.md          从源文件到 Workshop 的完整制作流程
 │   ├── diagnostics.md       T 字、手指、尾巴、材质、动骨等故障诊断
 │   ├── review-checklist.md  游戏内外完整验收清单
-│   └── toolchain.md         Blender、StudioMDL、GMad 等工具链
+│   ├── dependencies.md      依赖版本、官方下载位置和安装顺序
+│   └── toolchain.md         Blender、StudioMDL、GMad 等执行方式
 └── scripts/
+    ├── check_dependencies.ps1 检测本机 Blender、GMod 和辅助工具
+    ├── create_port_workspace.py 创建标准工作目录和项目配置
     ├── checkpoint.py        原子保存任务状态和失败次数
     ├── audit_qc.py          审查 PM、NPC、C-Arms QC
     └── audit_addon.py       审查 Addon、材质、NPC 动画、Lua 和部署哈希
@@ -47,6 +50,29 @@ gmod-model-porter-skill/
 git clone https://github.com/lyyyyyb/gmod-model-porter-skill.git `
   "$env:USERPROFILE\.codex\skills\gmod-model-porter"
 ```
+
+## 首次准备
+
+先检测本机依赖：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\check_dependencies.ps1 `
+  -JsonPath reports\dependencies.json
+```
+
+然后建立一个不会覆盖原模型的标准工作区：
+
+```powershell
+python scripts\create_port_workspace.py `
+  --work-root C:\ModelPortWork\example_character `
+  --model-id example_character `
+  --display-name "Example Character" `
+  --target-height 72
+```
+
+它会生成原始文件、Blender 工作文件、Unity 证据、编译、Addon、发布、报告、预览和备份目录，同时创建 `port-config.json`、来源许可清单、Workshop 说明副本与可恢复的状态文件。脚本不会复制或修改源模型。
+
+完整依赖、版本建议和官方下载位置见 [`references/dependencies.md`](references/dependencies.md)。公开仓库不捆绑 Blender、Crowbar、VTFEdit、Valve 工具或任何第三方模型资产。
 
 ## 使用
 
@@ -68,6 +94,27 @@ $gmod-model-porter 对照参考 addon 重做角色自己的 C-Arms，不复制�
 ```
 
 ## 自动审查
+
+### 审查 Blender 源文件
+
+先生成一个不含第三方资产的 Blender 工作模板：
+
+```powershell
+& <blender.exe> --background --factory-startup `
+  --python assets\templates\blender\setup_port_scene.py `
+  -- --output C:\ModelPortWork\example_character\source_work\00_workspace.blend `
+  --target-height 72
+```
+
+它会建立源参考、角色工作、骨架、身体组、C-Arms、物理和导出集合；输出已存在时拒绝覆盖。
+
+```powershell
+& <blender.exe> --background <character.blend> `
+  --python assets\templates\blender\inspect_character.py `
+  -- --output reports\blender_inventory.json
+```
+
+该脚本只读统计网格、骨架、材质、Shape Key、UV、权重、三角面、对象变换和整体边界，不修改 Blend。
 
 ### 保存制作状态
 
@@ -101,10 +148,22 @@ python scripts/audit_addon.py `
 
 python scripts/audit_addon.py `
   --addon C:\ModelPortWork\addon_stage `
-  --compare F:\SteamLibrary\steamapps\common\GarrysMod\garrysmod\addons\character
+  --compare "C:\Path\To\GarrysMod\garrysmod\addons\character"
 ```
 
 它会检查模型伴随文件、NPC 动画引用、VMT 贴图、Lua 模型路径、死亡闭眼处理、GLuaLint 和逐文件 SHA256 差异。
+
+### 构建并反向验证 GMA
+
+将 [`assets/templates/build_release.ps1`](assets/templates/build_release.ps1) 复制到项目工作区后运行：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File build_release.ps1 `
+  -AddonStage addon_stage `
+  -OutputGma release\example_character.gma
+```
+
+它会阻止 QC、Blend、SMD 等开发文件进入 GMA，创建后立即解包并逐文件核对 SHA256，最后写出发布收据。已有 GMA 默认不会覆盖；使用 `-Force` 时会先保留时间戳备份。
 
 ## 验收原则
 
@@ -121,15 +180,9 @@ python scripts/audit_addon.py `
 
 ## 运行环境
 
-- Windows 10/11
-- Garry's Mod 和 Source 模型编译工具
-- Blender 与 Blender Source Tools
-- Python 3
-- StudioMDL / HLMV / GMad
-- VTFEdit Reloaded 或 VTFCmd
-- GLuaLint
+最低需要 Windows 10/11、Garry's Mod、Blender、Blender Source Tools 和 Python 3。StudioMDL、HLMV、GMad 随 GMod 提供；Crowbar、VTFEdit Reloaded、GLuaLint、7-Zip 和 AssetRipper 为推荐工具。
 
-具体路径由 Skill 在任务开始时搜索，不应直接照搬旧项目的绝对路径。
+具体路径由依赖检测器在任务开始时搜索，不应直接照搬旧项目的绝对路径。模板仅使用 Python 标准库和 Blender 自带模块，不需要额外安装 pip 包。
 
 ## English
 

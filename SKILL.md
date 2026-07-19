@@ -20,12 +20,13 @@ description: Port, repair, audit, compile, package, and deploy complete characte
 
 ## 开始任务
 
-1. 阅读 [workflow.md](references/workflow.md)，建立阶段计划和验收门槛。
-2. 涉及异常时阅读 [diagnostics.md](references/diagnostics.md)。
-3. 涉及 C-Arms、尾巴、材质、动骨、Hitbox 或 NPC 时阅读 [kaguya-lessons.md](references/kaguya-lessons.md)。
-4. 编译和部署前阅读 [review-checklist.md](references/review-checklist.md)。
-5. 需要定位 Blender、StudioMDL、HLMV、GMad 或 Crowbar 时阅读 [toolchain.md](references/toolchain.md)。
-6. 复制 `assets/templates/` 中需要的模板，并替换全部 `{{TOKEN}}`；不得把未替换模板直接编译或发布。
+1. 阅读 [dependencies.md](references/dependencies.md)，运行 `scripts/check_dependencies.ps1`，记录现有版本和缺失项。不要从旧项目复制 EXE/DLL。
+2. 阅读 [workflow.md](references/workflow.md)，建立阶段计划和验收门槛。
+3. 涉及异常时阅读 [diagnostics.md](references/diagnostics.md)。
+4. 涉及 C-Arms、尾巴、材质、动骨、Hitbox 或 NPC 时阅读 [kaguya-lessons.md](references/kaguya-lessons.md)。
+5. 编译和部署前阅读 [review-checklist.md](references/review-checklist.md)。
+6. 需要定位 Blender、StudioMDL、HLMV、GMad 或 Crowbar 时阅读 [toolchain.md](references/toolchain.md)。
+7. 复制 `assets/templates/` 中需要的模板，并替换全部 `{{TOKEN}}`；不得把未替换模板直接编译或发布。
 
 ## 固定工作目录
 
@@ -43,6 +44,12 @@ work/
   reports/             JSON、日志、哈希和检查结果
   previews/            Blender/HLMV/GMod 验收图
   backups/             部署前备份
+```
+
+优先使用脚本创建目录和可恢复状态：
+
+```powershell
+python scripts/create_port_workspace.py --work-root <work> --model-id <lowercase_id> --target-height 72
 ```
 
 ## 生产门槛
@@ -105,6 +112,10 @@ work/
 ## 自动工具
 
 ```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check_dependencies.ps1 -JsonPath <work>/reports/dependencies.json
+python scripts/create_port_workspace.py --work-root <work> --model-id <model_id> --target-height 72
+<blender.exe> --background --factory-startup --python assets/templates/blender/setup_port_scene.py -- --output <work>/source_work/00_workspace.blend --target-height 72
+<blender.exe> --background <source.blend> --python assets/templates/blender/inspect_character.py -- --output <work>/reports/blender_inventory.json
 python scripts/checkpoint.py --work-root <work> --task "Port model" --status source-audited --next "Build PM"
 python scripts/audit_qc.py --qc <player.qc> --kind player
 python scripts/audit_qc.py --qc <npc.qc> --kind npc
@@ -118,4 +129,5 @@ python scripts/audit_addon.py --addon <addon_stage> --compare <game_addon>
 
 - 给出功能结果、仍有限制、部署位置、备份位置、文件数、哈希差异、编译/Lua 检查和是否完成游戏内验收。
 - 明确说明是否修改了压缩版、未压缩版、GMA、最终仓库和游戏 addon。
+- 依赖报告必须区分必需和推荐工具；缺少必需工具时不应声称已完成编译或游戏验收。
 - 最后给非程序员一条可以照做的操作：完整退出并重启 GMod，删除旧实例，重新生成指定 PM/NPC/Ragdoll，再按指定武器和身体组截图。
