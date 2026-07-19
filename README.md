@@ -2,9 +2,9 @@
 
 一套用于把 Blender、FBX、UnityPackage 或 VRChat 角色完整移植到 Garry's Mod 的 Codex Skill。
 
-它来自 Kaguya 完整转模项目的实际制作、返工和验收经验，不只负责“编译出模型”，还会处理玩家模型、敌友 NPC、Ragdoll、C-Arms、身体组、材质、动骨、Hitbox、眨眼、死亡闭眼、Workshop 打包和游戏目录部署。
+它来自完整转模项目的实际制作、返工和验收经验，不只负责“编译出模型”，还会处理玩家模型、敌友 NPC、Ragdoll、C-Arms、身体组、材质、动骨、Hitbox、眨眼、死亡闭眼、Workshop 打包和游戏目录部署。
 
-> 本仓库只包含通用流程、模板和审查工具，不包含 Kaguya、IKUSIA 或其他作者的原模型、贴图和付费资源。
+> 本仓库只包含通用流程、模板和审查工具，不包含任何第三方的原模型、贴图和付费资源。
 
 ## 能做什么
 
@@ -31,7 +31,6 @@ gmod-model-porter-skill/
 ├── references/
 │   ├── workflow.md          从源文件到 Workshop 的完整制作流程
 │   ├── diagnostics.md       T 字、手指、尾巴、材质、动骨等故障诊断
-│   ├── kaguya-lessons.md    Kaguya 项目的成功与失败经验
 │   ├── review-checklist.md  游戏内外完整验收清单
 │   └── toolchain.md         Blender、StudioMDL、GMad 等工具链
 └── scripts/
@@ -146,6 +145,6 @@ Invoke it in a new Codex task with:
 $gmod-model-porter Port this character as a complete Garry's Mod addon and validate it in game.
 ```
 
-## Credits and asset policy
+## Asset policy
 
-The workflow was refined while porting a Kaguya model created by IKUSIA. All original character assets remain the property of their respective authors. This repository contains no original model or texture assets and grants no redistribution rights for third-party content.
+All original character assets remain the property of their respective authors. This repository contains no original model or texture assets and grants no redistribution rights for third-party content.
