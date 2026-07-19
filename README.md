@@ -48,8 +48,6 @@ git clone https://github.com/lyyyyyb/gmod-model-porter-skill.git `
   "$env:USERPROFILE\.codex\skills\gmod-model-porter"
 ```
 
-这是私有仓库，克隆时需要登录对应 GitHub 账号。安装后新建一个 Codex 任务，让 Skill 列表重新加载。
-
 ## 使用
 
 在新任务中直接输入：
